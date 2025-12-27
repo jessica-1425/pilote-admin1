@@ -1,0 +1,545 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Pilote Admin — Assistance administrative & gestion externalisée pour particuliers, indépendants et TPE." />
+  <title>Pilote Admin — Assistance administrative externalisée</title>
+  <style>
+    :root{
+      --bg:#0b1220;
+      --card:#111a2f;
+      --soft:#172244;
+      --text:#eaf0ff;
+      --muted:#b8c2e0;
+      --line:#243058;
+      --accent:#8bd3ff;
+      --accent2:#b7ffda;
+      --danger:#ff8b8b;
+      --radius:18px;
+      --shadow:0 14px 40px rgba(0,0,0,.35);
+      --max:1120px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      background: radial-gradient(1200px 700px at 10% 10%, rgba(139,211,255,.18), transparent 55%),
+                  radial-gradient(1000px 650px at 95% 15%, rgba(183,255,218,.12), transparent 52%),
+                  radial-gradient(1100px 750px at 55% 95%, rgba(139,211,255,.10), transparent 55%),
+                  var(--bg);
+      color:var(--text);
+      line-height:1.5;
+    }
+    a{color:inherit; text-decoration:none}
+    .wrap{max-width:var(--max); margin:0 auto; padding:24px}
+
+    /* Top bar */
+    header{
+      position:sticky; top:0; z-index:50;
+      backdrop-filter: blur(10px);
+      background: rgba(11,18,32,.72);
+      border-bottom:1px solid rgba(36,48,88,.55);
+    }
+    .top{
+      display:flex; align-items:center; justify-content:space-between;
+      gap:12px;
+      padding:14px 24px;
+      max-width:var(--max);
+      margin:0 auto;
+    }
+    .brand{display:flex; align-items:center; gap:10px; font-weight:800; letter-spacing:.2px}
+    .logo{
+      width:38px; height:38px; border-radius:12px;
+      background: linear-gradient(135deg, rgba(139,211,255,.9), rgba(183,255,218,.9));
+      box-shadow: 0 12px 28px rgba(139,211,255,.18);
+      position:relative;
+      overflow:hidden;
+    }
+    .logo:before{
+      content:"";
+      position:absolute; inset:-40% -40% auto auto;
+      width:120%; height:120%;
+      transform: rotate(18deg);
+      background: rgba(255,255,255,.22);
+      border-radius: 22px;
+    }
+    nav{display:flex; gap:14px; flex-wrap:wrap; align-items:center; justify-content:flex-end}
+    nav a{
+      color:var(--muted);
+      padding:8px 10px;
+      border-radius:12px;
+      border:1px solid transparent;
+      font-weight:600;
+      font-size:14px;
+    }
+    nav a:hover{color:var(--text); border-color:rgba(36,48,88,.7); background:rgba(17,26,47,.55)}
+
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center;
+      gap:10px;
+      padding:12px 14px;
+      border-radius:14px;
+      border:1px solid rgba(36,48,88,.9);
+      background: rgba(17,26,47,.75);
+      color:var(--text);
+      font-weight:800;
+      cursor:pointer;
+      transition: transform .08s ease, background .2s ease, border-color .2s ease;
+      box-shadow: 0 12px 30px rgba(0,0,0,.25);
+    }
+    .btn:hover{background: rgba(23,34,68,.8); border-color: rgba(139,211,255,.55)}
+    .btn:active{transform: translateY(1px)}
+    .btn.primary{
+      background: linear-gradient(135deg, rgba(139,211,255,.25), rgba(183,255,218,.18));
+      border-color: rgba(139,211,255,.55);
+    }
+    .btn.small{padding:10px 12px; font-size:14px; border-radius:12px}
+
+    /* Hero */
+    .hero{
+      padding:46px 0 22px;
+    }
+    .grid{
+      display:grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap:22px;
+      align-items:stretch;
+    }
+    @media (max-width: 900px){
+      .grid{grid-template-columns: 1fr;}
+      nav{display:none}
+      .top{gap:10px}
+    }
+
+    h1{
+      font-size: clamp(32px, 3.5vw, 54px);
+      line-height:1.06;
+      margin: 8px 0 12px;
+      letter-spacing: -0.6px;
+    }
+    .lead{color:var(--muted); font-size:18px; max-width:58ch; margin: 0 0 18px}
+    .kpi{display:flex; gap:12px; flex-wrap:wrap; margin-top:18px}
+    .chip{
+      display:flex; align-items:center; gap:10px;
+      padding:10px 12px;
+      border-radius:999px;
+      border:1px solid rgba(36,48,88,.75);
+      background: rgba(17,26,47,.5);
+      color:var(--text);
+      font-weight:700;
+      font-size:13px;
+    }
+    .dot{width:9px; height:9px; border-radius:99px; background: var(--accent)}
+    .dot.g{background: var(--accent2)}
+
+    .card{
+      background: linear-gradient(180deg, rgba(17,26,47,.78), rgba(17,26,47,.55));
+      border:1px solid rgba(36,48,88,.8);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .card .pad{padding:18px}
+    .sub{color:var(--muted); font-weight:700; letter-spacing:.2px; font-size:13px; text-transform:uppercase}
+    .mini{color:var(--muted); font-size:14px}
+
+    .hero-actions{display:flex; gap:12px; flex-wrap:wrap; margin-top:14px}
+
+    /* Sections */
+    section{padding: 22px 0}
+    .section-title{display:flex; align-items:flex-end; justify-content:space-between; gap:14px; margin-bottom:12px}
+    h2{margin:0; font-size: clamp(22px, 2vw, 30px); letter-spacing:-0.3px}
+
+    .cols{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:14px;
+    }
+    @media (max-width: 980px){
+      .cols{grid-template-columns: 1fr;}
+    }
+
+    .item{
+      padding:16px;
+      border-radius: 16px;
+      border:1px solid rgba(36,48,88,.75);
+      background: rgba(23,34,68,.45);
+    }
+    .item h3{margin: 0 0 6px; font-size:16px}
+    .item p{margin:0; color:var(--muted); font-size:14px}
+
+    /* Pricing */
+    .pricing{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:14px;
+    }
+    @media (max-width: 980px){
+      .pricing{grid-template-columns: 1fr;}
+    }
+    .price{
+      position:relative;
+      padding:18px;
+      border-radius: 18px;
+      border:1px solid rgba(36,48,88,.85);
+      background: rgba(17,26,47,.55);
+      overflow:hidden;
+    }
+    .badge{
+      position:absolute; top:14px; right:14px;
+      font-size:12px;
+      font-weight:900;
+      padding:8px 10px;
+      border-radius:999px;
+      border:1px solid rgba(139,211,255,.55);
+      background: rgba(139,211,255,.10);
+    }
+    .price h3{margin:0 0 6px}
+    .money{font-size:34px; font-weight:900; margin:8px 0 10px}
+    .money span{font-size:14px; color:var(--muted); font-weight:800}
+    .list{margin:0; padding-left:18px; color:var(--muted)}
+    .list li{margin:6px 0}
+
+    /* Process */
+    .steps{display:grid; grid-template-columns: repeat(4, 1fr); gap:12px}
+    @media (max-width: 980px){
+      .steps{grid-template-columns: 1fr;}
+    }
+    .step{
+      padding:14px;
+      border-radius:16px;
+      border:1px solid rgba(36,48,88,.75);
+      background: rgba(23,34,68,.35);
+    }
+    .step b{display:block; margin-bottom:6px}
+    .num{
+      display:inline-flex; align-items:center; justify-content:center;
+      width:28px; height:28px;
+      border-radius:10px;
+      margin-right:8px;
+      background: rgba(139,211,255,.12);
+      border:1px solid rgba(139,211,255,.45);
+      font-weight:900;
+    }
+
+    /* Contact */
+    form{display:grid; gap:12px}
+    label{font-weight:800; font-size:13px; color:var(--muted)}
+    input, textarea{
+      width:100%;
+      padding:12px 12px;
+      border-radius:14px;
+      border:1px solid rgba(36,48,88,.85);
+      background: rgba(11,18,32,.55);
+      color: var(--text);
+      outline:none;
+    }
+    input:focus, textarea:focus{border-color: rgba(139,211,255,.7)}
+    textarea{min-height:120px; resize:vertical}
+
+    footer{
+      padding: 18px 0 28px;
+      color: var(--muted);
+      font-size: 13px;
+      border-top: 1px solid rgba(36,48,88,.6);
+      margin-top: 18px;
+    }
+
+    /* Accessibility */
+    .sr-only{position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="top">
+      <a class="brand" href="#top" aria-label="Aller en haut">
+        <span class="logo" aria-hidden="true"></span>
+        <span>Pilote Admin</span>
+      </a>
+      <nav aria-label="Navigation principale">
+        <a href="#services">Services</a>
+        <a href="#offres">Offres</a>
+        <a href="#process">Méthode</a>
+        <a href="#contact">Contact</a>
+      </nav>
+      <a class="btn small primary" href="#contact">Demander un échange</a>
+    </div>
+  </header>
+
+  <main id="top" class="wrap">
+    <!-- HERO -->
+    <section class="hero">
+      <div class="grid">
+        <div>
+          <p class="sub">Assistance administrative & gestion externalisée</p>
+          <h1>Libérez du temps. <br/>Gardez le contrôle. <br/>Respirez.</h1>
+          <p class="lead">
+            J’accompagne <b>particuliers</b>, <b>indépendants</b> et <b>TPE</b> avec une approche simple :
+            <b>structurer</b>, <b>sécuriser</b> et <b>piloter</b> l’administratif pour que vous puissiez piloter votre activité.
+          </p>
+          <div class="hero-actions">
+            <a class="btn primary" href="#contact">📩 Devis / échange gratuit</a>
+            <a class="btn" href="#offres">Voir les offres</a>
+          </div>
+          <div class="kpi" aria-label="Points forts">
+            <div class="chip"><span class="dot"></span>Rigueur & confidentialité</div>
+            <div class="chip"><span class="dot g"></span>Sans embauche</div>
+            <div class="chip"><span class="dot"></span>Local & à distance</div>
+          </div>
+        </div>
+
+        <aside class="card" aria-label="Carte de présentation">
+          <div class="pad">
+            <p class="sub">Votre copilote administratif</p>
+            <h2 style="margin:6px 0 10px">Ce que vous gagnez</h2>
+            <div class="cols" style="grid-template-columns: 1fr; gap:10px">
+              <div class="item">
+                <h3>🕒 Temps</h3>
+                <p>Moins de papiers, plus d’action (et un café chaud, parfois).</p>
+              </div>
+              <div class="item">
+                <h3>📌 Visibilité</h3>
+                <p>Suivi clair : factures, relances, dossiers, priorités.</p>
+              </div>
+              <div class="item">
+                <h3>🛡️ Sérénité</h3>
+                <p>Process fiables, documents propres, zéro stress inutile.</p>
+              </div>
+            </div>
+            <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:14px">
+              <a class="btn small" href="#services">Découvrir les services</a>
+              <a class="btn small" href="#contact">Contact rapide</a>
+            </div>
+            <p class="mini" style="margin-top:12px">* La pré-comptabilité s’entend hors missions réservées à l’expert-comptable.</p>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- SERVICES -->
+    <section id="services">
+      <div class="section-title">
+        <h2>Services</h2>
+        <p class="mini">Du concret. Du propre. Du suivi.</p>
+      </div>
+      <div class="cols">
+        <div class="item">
+          <h3>👨‍👩‍👧‍👦 Particuliers</h3>
+          <p>Démarches (CAF, impôts, retraite), organisation administrative, suivi factures, accompagnement numérique.</p>
+        </div>
+        <div class="item">
+          <h3>🧑‍🔧 Indépendants & TPE</h3>
+          <p>Devis / facturation / relances, classement, tableaux de suivi, organisation des process, liaison avec votre comptable.</p>
+        </div>
+        <div class="item">
+          <h3>🏖️ Tourisme & locations</h3>
+          <p>Back-office réservations, relation clients/propriétaires, coordination ménage/maintenance, checklists, organisation saison.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- OFFERS -->
+    <section id="offres">
+      <div class="section-title">
+        <h2>Offres</h2>
+        <p class="mini">Forfaits mensuels — simples, lisibles, sans surprise.</p>
+      </div>
+      <div class="pricing">
+        <article class="price">
+          <h3>Essentielle</h3>
+          <div class="money">250<span> € HT / mois</span></div>
+          <ul class="list">
+            <li>10 h / mois</li>
+            <li>Facturation & relances</li>
+            <li>Classement / transmission comptable</li>
+            <li>Suivi administratif de base</li>
+          </ul>
+          <div style="margin-top:14px">
+            <a class="btn small primary" href="#contact">Choisir Essentielle</a>
+          </div>
+        </article>
+
+        <article class="price" style="border-color: rgba(139,211,255,.7); background: linear-gradient(180deg, rgba(139,211,255,.10), rgba(17,26,47,.55));">
+          <span class="badge">Le plus demandé</span>
+          <h3>Sérénité</h3>
+          <div class="money">450<span> € HT / mois</span></div>
+          <ul class="list">
+            <li>20 h / mois</li>
+            <li>Devis + facturation + relances</li>
+            <li>Tableaux de suivi (trésorerie, charges)</li>
+            <li>Organisation & procédures simples</li>
+          </ul>
+          <div style="margin-top:14px">
+            <a class="btn small primary" href="#contact">Choisir Sérénité</a>
+          </div>
+        </article>
+
+        <article class="price">
+          <h3>Pilote</h3>
+          <div class="money">750<span> € HT / mois</span></div>
+          <ul class="list">
+            <li>35 h / mois</li>
+            <li>Coordination opérationnelle</li>
+            <li>Process & checklists (tourisme / équipe)</li>
+            <li>Suivi complet + priorisation</li>
+          </ul>
+          <div style="margin-top:14px">
+            <a class="btn small primary" href="#contact">Choisir Pilote</a>
+          </div>
+        </article>
+      </div>
+      <p class="mini" style="margin-top:12px">Option : facturation à l’heure (sur demande) — idéal pour coups de main ponctuels.</p>
+    </section>
+
+    <!-- PROCESS -->
+    <section id="process">
+      <div class="section-title">
+        <h2>Méthode</h2>
+        <p class="mini">Une routine simple qui évite les urgences inutiles.</p>
+      </div>
+      <div class="steps">
+        <div class="step"><b><span class="num">1</span>Échange</b><span class="mini">15–30 min pour cadrer le besoin.</span></div>
+        <div class="step"><b><span class="num">2</span>Diagnostic</b><span class="mini">Ce qui bloque, ce qui manque, ce qui coûte du temps.</span></div>
+        <div class="step"><b><span class="num">3</span>Plan d’action</b><span class="mini">Procédures simples, outils, priorités, calendrier.</span></div>
+        <div class="step"><b><span class="num">4</span>Pilotage</b><span class="mini">Suivi régulier, relances, reporting clair.</span></div>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="apropos">
+      <div class="section-title">
+        <h2>À propos</h2>
+        <p class="mini">Rigueur, confidentialité, efficacité terrain.</p>
+      </div>
+      <div class="card">
+        <div class="pad">
+          <p style="margin:0; color:var(--muted)">
+            Assistante de gestion & comptabilité de formation, expérience en secrétariat de direction et coordination dans la location de vacances.
+            Habitude des procédures, de la confidentialité et du travail carré.
+            Objectif : vous simplifier la vie, sans jargon et sans perte de temps.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact">
+      <div class="section-title">
+        <h2>Contact</h2>
+        <p class="mini">Réponse sous 24–48h (hors week-end). Promis, vos mails ne finiront pas en "à traiter un jour".</p>
+      </div>
+
+      <div class="grid" style="grid-template-columns: 1fr 1fr">
+        <div class="card">
+          <div class="pad">
+            <h3 style="margin:0 0 10px">Coordonnées</h3>
+            <p class="mini" style="margin:0 0 12px">Remplacez les champs ci-dessous par vos informations.</p>
+            <div class="item">
+              <p style="margin:0"><b>Email :</b> <a href="mailto:contact@pilote-admin.fr">contact@pilote-admin.fr</a></p>
+              <p style="margin:6px 0 0"><b>Téléphone :</b> <a href="tel:+33000000000">+33 0 00 00 00 00</a></p>
+              <p style="margin:6px 0 0"><b>Zone :</b> Local + à distance</p>
+            </div>
+            <div style="margin-top:12px; display:flex; gap:10px; flex-wrap:wrap">
+              <a class="btn small" href="mailto:contact@pilote-admin.fr?subject=Demande%20d%27%C3%A9change%20%E2%80%94%20Pilote%20Admin&body=Bonjour%2C%0A%0AJe%20souhaite%20un%20%C3%A9change%20pour%20%3A%0A-%20Type%20%28Particulier%2FPro%2FTourisme%29%20%3A%0A-%20Votre%20besoin%20%3A%0A-%20Votre%20ville%20%3A%0A-%20Disponibilit%C3%A9s%20%3A%0A%0AMerci%20%21">📧 Envoyer un mail</a>
+              <a class="btn small primary" href="#offres">Voir les forfaits</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="pad">
+            <h3 style="margin:0 0 10px">Formulaire</h3>
+            <p class="mini" style="margin:0 0 12px">Ce formulaire envoie un email via votre application mail (simple, sans serveur). Pour un vrai formulaire web, il faudra un hébergement + une API.</p>
+
+            <form id="contactForm">
+              <div>
+                <label for="name">Nom</label>
+                <input id="name" name="name" autocomplete="name" placeholder="Votre nom" required />
+              </div>
+              <div>
+                <label for="email">Email</label>
+                <input id="email" name="email" type="email" autocomplete="email" placeholder="vous@exemple.fr" required />
+              </div>
+              <div>
+                <label for="type">Vous êtes…</label>
+                <input id="type" name="type" placeholder="Particulier / Indépendant / TPE / Tourisme" />
+              </div>
+              <div>
+                <label for="message">Message</label>
+                <textarea id="message" name="message" placeholder="Expliquez votre besoin (ex : devis, facturation, relances, organisation, dossiers…)" required></textarea>
+              </div>
+              <button class="btn primary" type="submit">Envoyer</button>
+              <p class="mini" id="formHint" style="margin:0"></p>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:14px">
+        <div class="pad">
+          <h3 style="margin:0 0 8px">Mentions</h3>
+          <p class="mini" style="margin:0">
+            Micro-entreprise — SIRET : à compléter • Responsable de publication : à compléter •
+            Données : les messages sont utilisés uniquement pour répondre à votre demande.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="wrap" style="padding:0">
+        <div style="display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap">
+          <span>© <span id="year"></span> Pilote Admin</span>
+          <span>Site one-page — rapide, propre, efficace (comme l’admin quand on la laisse respirer).</span>
+        </div>
+      </div>
+    </footer>
+  </main>
+
+  <script>
+    // Smooth scroll for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', (e) => {
+        const id = a.getAttribute('href');
+        const el = document.querySelector(id);
+        if (!el) return;
+        e.preventDefault();
+        el.scrollIntoView({behavior:'smooth', block:'start'});
+        history.pushState(null, '', id);
+      });
+    });
+
+    // Contact form -> mailto (no backend)
+    const form = document.getElementById('contactForm');
+    const hint = document.getElementById('formHint');
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const type = document.getElementById('type').value.trim();
+      const message = document.getElementById('message').value.trim();
+
+      if (!name || !email || !message) {
+        hint.textContent = "Merci de remplir au minimum Nom, Email et Message.";
+        hint.style.color = "#ffb3b3";
+        return;
+      }
+
+      const to = "contact@pilote-admin.fr"; // <-- À MODIFIER
+      const subject = `Demande d'échange — ${name}`;
+      const body = `Bonjour,\n\nJe suis : ${type || "(non précisé)"}\n\nMon besoin :\n${message}\n\nContact : ${name} — ${email}\n`;
+
+      const url = `mailto:${encodeURIComponent(to)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      window.location.href = url;
+
+      hint.textContent = "Votre application mail va s’ouvrir. Si rien ne se passe, copiez l’adresse email et envoyez manuellement.";
+      hint.style.color = "#b8c2e0";
+    });
+
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
